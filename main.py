@@ -16,7 +16,7 @@ id = os.getenv('id')
 pw = os.getenv('pw')
 
 chrome_options = Options()
-chrome_options.add_argument('headless')
+# chrome_options.add_argument('headless')
 chrome_options.add_argument('window-size=1920x1080')
 chrome_options.add_argument('--start-maximized')
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
@@ -131,14 +131,24 @@ df_before = get_info()
 push_html(df_before)
 
 while True:
-    time.sleep(180)
+    time.sleep(120)
     df_after = get_info()
 
     if not df_before.equals(df_after):
         push_html(df_after)
         print('Push Completed.')
 
-        msg = MIMEText('원서접수 경쟁률 변경이 감지되었습니다.')
+        df_diff = df_before.compare(df_after, align_axis=1, keep_shape=False, keep_equal=False)
+        changes = []
+        message = '원서 접수 경쟁률이 변경되었습니다.\n'
+
+        for index, row in df_diff.iterrows():
+            changes.append([index, row[('지원자 수', 'self')], row[('지원자 수', 'other')], row[('경쟁률', 'self')], row[('경쟁률', 'other')]])
+
+        for item in changes:
+            message += item[0] + " - 지원자 수: <b>" + item[1] + "</b>명 → <b>" + item[2] + "</b>명 / 경쟁률: <b>" + item[3] + "</b> → <b>" + item[4] + "</b>\n"
+
+        msg = MIMEText(message, 'html')
         msg["Subject"] = '경쟁률 변경 감지'
         msg["From"] = id
         msg["To"] = id
