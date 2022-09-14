@@ -80,7 +80,7 @@ while True:
     korea = Department('//*[@id="Tr_0151_000950000"]/td', ['[3]', '[4]', '[5]/font/b'])
     df.loc['고려대 학업우수'] = list_generator(korea)
 
-    # TAB_6: 아주대 ACE``
+    # TAB_6: 아주대 ACE
     driver.switch_to.window(tabs[5])
     driver.get('http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11040291.html')
     ajou = Department('//*[@id="SelType402"]/table/tbody/tr[21]/td', ['[2]', '[3]', '[4]'])
@@ -93,11 +93,14 @@ while True:
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300&display=swap" rel="stylesheet">
-    <style>* {font-family: 'IBM Plex Sans KR', sans-serif;}</style>
+    <style>* {font-family: 'IBM Plex Sans KR', sans-serif;}
+    td {text-align: center;}</style>
     </head>
     <body>
     '''
-    html_text = html_text + df.to_html() + '</body>'
+
+    html_body = df.to_html().replace('text-align: right;', 'text-align: center;')
+    html_text = html_text + html_body + '</body>'
     with open('index.html', 'w') as html_file:
         html_file.write(html_text)
 
