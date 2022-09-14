@@ -80,7 +80,7 @@ while True:
     korea = Department('//*[@id="Tr_0151_000950000"]/td', ['[3]', '[4]', '[5]/font/b'])
     df.loc['고려대 학업우수'] = list_generator(korea)
 
-    # TAB_6: 아주대 ACE
+    # TAB_6: 아주대 ACE``
     driver.switch_to.window(tabs[5])
     driver.get('http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11040291.html')
     ajou = Department('//*[@id="SelType402"]/table/tbody/tr[21]/td', ['[2]', '[3]', '[4]'])
@@ -105,4 +105,4 @@ while True:
     repo.index.commit('automatic update')
     repo.remotes.origin.push()
 
-    time.sleep(10)
+    time.sleep(60)
