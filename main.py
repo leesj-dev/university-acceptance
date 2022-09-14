@@ -105,4 +105,4 @@ while True:
     repo.index.commit('automatic update')
     repo.remotes.origin.push()
 
-    time.sleep(60)
+    time.sleep(180)
