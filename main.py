@@ -9,7 +9,10 @@ import time
 
 repo = Repo()
 chrome_options = Options()
+chrome_options.add_argument('headless')
+chrome_options.add_argument('window-size=1920x1080')
 chrome_options.add_argument('--start-maximized')
+chrome_options.add_argument("disable-gpu")
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
 class Department:
@@ -33,7 +36,7 @@ def list_generator(item):
     item_list = [item.accepted(), item.sent(), item.rate()]
     return item_list
 
-col = ['정원', '지원자 수', '경쟁률']
+col = ['모집 인원', '지원자 수', '경쟁률']
 ind = ['울산대', '부산대', '경희대', '한양대', '고려대', '아주대']
 con = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
 df = pd.DataFrame(con, columns=col, index=ind)
