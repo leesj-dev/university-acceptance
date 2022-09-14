@@ -19,7 +19,6 @@ chrome_options = Options()
 chrome_options.add_argument('headless')
 chrome_options.add_argument('window-size=1920x1080')
 chrome_options.add_argument('--start-maximized')
-chrome_options.add_argument("disable-gpu")
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
 class Department:
@@ -135,7 +134,7 @@ while True:
     time.sleep(180)
     df_after = get_info()
 
-    if df_before != df_after:
+    if not df_before.equals(df_after):
         push_html(df_after)
 
         msg = MIMEText('원서접수 경쟁률 변경이 감지되었습니다.')
