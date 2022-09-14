@@ -131,7 +131,7 @@ df_before = get_info()
 push_html(df_before)
 
 while True:
-    time.sleep(120)
+    time.sleep(60)
     df_after = get_info()
 
     if not df_before.equals(df_after):
