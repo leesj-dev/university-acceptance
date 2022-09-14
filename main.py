@@ -37,7 +37,7 @@ def list_generator(item):
     return item_list
 
 col = ['모집 인원', '지원자 수', '경쟁률']
-ind = ['울산대', '부산대', '경희대', '한양대', '고려대', '아주대']
+ind = ['울산대 지역인재', '부산대 지역인재', '경희대 네오르네상스', '한양대 일반', '고려대 학업우수', '아주대 ACE']
 con = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
 df = pd.DataFrame(con, columns=col, index=ind)
 
@@ -50,41 +50,41 @@ while iterations < 6:
 tabs = driver.window_handles
 
 while True:
-    # TAB_1: 울산대
+    # TAB_1: 울산대 지역인재
     driver.switch_to.window(tabs[0])
     driver.get('http://ratio.uwayapply.com/Sl5KVzgmQzpKZiUmOiZKcGZUZg==')
     ulsan = Department('//*[@id="Tr_02B02034_002080000"]/td', ['[3]', '[4]', '[5]/font/b'])
-    df.loc['울산대'] = list_generator(ulsan)
+    df.loc['울산대 지역인재'] = list_generator(ulsan)
 
-    # TAB_2: 부산대
+    # TAB_2: 부산대 지역인재
     driver.switch_to.window(tabs[1])
     driver.get('http://addon.jinhakapply.com/RatioV1/RatioH/Ratio12100301.html')
     pusan = Department('//*[@id="SelType4F"]/table/tbody/tr[29]/td', ['[3]', '[4]', '[5]'])
-    df.loc['부산대'] = list_generator(pusan)
+    df.loc['부산대 지역인재'] = list_generator(pusan)
 
-    # TAB_3: 경희대
+    # TAB_3: 경희대 네오르네상스
     driver.switch_to.window(tabs[2])
     driver.get('http://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSnBmVGY=')
     kyunghee = Department('//*[@id="Tr_01312_000700000"]/td', ['[3]', '[4]', '[5]/font/b'])
-    df.loc['경희대'] = list_generator(kyunghee)
+    df.loc['경희대 네오르네상스'] = list_generator(kyunghee)
 
-    # TAB_4: 한양대
+    # TAB_4: 한양대 일반
     driver.switch_to.window(tabs[3])
     driver.get('http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11640191.html')
     hanyang = Department('//*[@id="SelType4B"]/table/tbody/tr[23]/td', ['[3]', '[4]', '[5]'])
-    df.loc['한양대'] = list_generator(hanyang)
+    df.loc['한양대 일반'] = list_generator(hanyang)
 
-    # TAB_5: 고려대
+    # TAB_5: 고려대 학업우수
     driver.switch_to.window(tabs[4])
     driver.get('http://ratio.uwayapply.com/Sl5KOGB9YTlKZiUmOiZKcGZUZg==')
     korea = Department('//*[@id="Tr_0151_000950000"]/td', ['[3]', '[4]', '[5]/font/b'])
-    df.loc['고려대'] = list_generator(korea)
+    df.loc['고려대 학업우수'] = list_generator(korea)
 
-    # TAB_6: 아주대
+    # TAB_6: 아주대 ACE
     driver.switch_to.window(tabs[5])
     driver.get('http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11040291.html')
     ajou = Department('//*[@id="SelType402"]/table/tbody/tr[21]/td', ['[2]', '[3]', '[4]'])
-    df.loc['아주대'] = list_generator(ajou)
+    df.loc['아주대 ACE'] = list_generator(ajou)
 
     print(df)
     print('\n')
