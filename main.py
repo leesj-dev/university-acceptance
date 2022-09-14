@@ -136,6 +136,7 @@ while True:
 
     if not df_before.equals(df_after):
         push_html(df_after)
+        print('Push Completed.')
 
         msg = MIMEText('원서접수 경쟁률 변경이 감지되었습니다.')
         msg["Subject"] = '경쟁률 변경 감지'
