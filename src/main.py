@@ -7,6 +7,7 @@ from git import Repo
 import pandas as pd
 import time
 
+repo = Repo()
 chrome_options = Options()
 chrome_options.add_argument('--start-maximized')
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
@@ -96,6 +97,9 @@ while True:
     html_text = html_text + df.to_html() + '</body>'
     with open('competition_rate.html', 'w') as html_file:
         html_file.write(html_text)
-    print(html_text)
+
+    repo.index.add('competition_rate.html')
+    repo.index.commit('automatic update')
+    repo.remotes.origin.push()
 
     time.sleep(10)
