@@ -190,8 +190,8 @@ while True:
     # 최소 업데이트 주기는 10분 단위임
     min = int(datetime.now().strftime("%M")[-1])
     sec  = int(datetime.now().strftime("%S"))
-    total_sec = 600 - 60 * min + sec
-    time.sleep(total_sec + 10)  # 여유를 주기 위해, 10초 더 추가
+    total_sec = 600 - 60 * min - sec
+    time.sleep(total_sec + 20)  # 여유를 주기 위해, 20초 정도 추가
 
     df_after = get_info()
 
