@@ -25,9 +25,8 @@ th {
 }
 
 h1 {
-    style: "font-size:30";
-    align: "center";
-    text-align: "center";
+    font-size: 30;
+    text-align: center;
 }
 
 /* Mobile First */
