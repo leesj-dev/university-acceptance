@@ -1,0 +1,54 @@
+* {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+td {
+    text-align: center;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table,
+td,
+th {
+    border-collapse: collapse;
+    border: 1px solid black;
+    text-align: center;
+}
+
+td,
+th {
+    padding: 5px 15px;
+}
+
+h1 {
+    style: "font-size:30";
+    align: "center";
+    text-align: "center";
+}
+
+/* Mobile First */
+.body {
+    font-size: 12px;
+}
+
+@media (min-width: 640px) {
+    .body {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 768px) {
+    .body {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .body {
+        font-size: 18px;
+    }
+}
