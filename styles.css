@@ -1,12 +1,7 @@
-@font-face {
-    font-family: 'IBM Plex Sans KR';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300&display=swap');
 
 * {
-    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
 }
 
 td {
@@ -28,7 +23,7 @@ th {
 
 td,
 th {
-    padding: 5% 5%;
+    padding: 4% 4%;
 }
 
 h1 {
@@ -38,12 +33,12 @@ h1 {
 
 /* Mobile First */
 .body {
-    font-size: 12px;
+    font-size: 10px;
 }
 
 @media (min-width: 640px) {
     .body {
-        font-size: 14px;
+        font-size: 13px;
     }
 }
 
@@ -55,6 +50,6 @@ h1 {
 
 @media (min-width: 1024px) {
     .body {
-        font-size: 18px;
+        font-size: 19px;
     }
 }
