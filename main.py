@@ -187,7 +187,12 @@ df_before = get_info()
 push_html(df_before)
 
 while True:
-    time.sleep(60)
+    # 최소 업데이트 주기는 10분 단위임
+    min = int(datetime.now().strftime("%M")[-1])
+    sec  = int(datetime.now().strftime("%S"))
+    total_sec = 600 - 60 * min + sec
+    time.sleep(total_sec + 10)  # 여유를 주기 위해, 10초 더 추가
+
     df_after = get_info()
 
     # 기준 시각이 바뀔 때: push는 무조건 해야 함
