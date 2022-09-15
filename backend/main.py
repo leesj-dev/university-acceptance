@@ -52,7 +52,7 @@ class Department:
         # 유웨이
         if '분' in time_string:
             time_string = time_string.split('분', 1)[0] + '분'
-            time_string = time_string.replace('년 ', '/')
+            time_string = time_string.replace('2022년 ', '')
             time_string = time_string.replace('월 ', '/')
             time_string = time_string.replace('일', '')
             time_string = time_string.replace('시 ', ':')
@@ -61,6 +61,7 @@ class Department:
         # 진학사
         elif '오전' in time_string or '오후' in time_string:
             time_string = time_string.split('현', 1)[0]
+            time_string = time_string.replace('2022-', '')
             time_string = time_string.replace('-', '/')
 
             if '오전' in time_string:
