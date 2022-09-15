@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from email.mime.text import MIMEText
 from git import Repo
+from datetime import datetime
 from dotenv import load_dotenv
 import pandas as pd
 import smtplib
@@ -177,7 +178,8 @@ def push_html(df):
     repo.index.commit('automatic update')
     repo.remotes.origin.push()
 
-    print('Push Completed.')
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print('push 완료 [' + current_time + ']')
 
 
 # 최초 실행
@@ -191,7 +193,6 @@ while True:
     # 기준 시각이 바뀔 때: push는 무조건 해야 함
     if not df_before.equals(df_after):
         push_html(df_after)
-        print('푸쉬가 완료되었습니다.')
 
         # 지원자 수가 바뀔 때만 메일을 보내야 함
         df_before_rmvtime = df_before.drop(columns=['기준 시각'])
@@ -218,6 +219,7 @@ while True:
                 smtp.login(id, pw)
                 smtp.sendmail(id, id, msg.as_string())
 
-            print('메일이 전송되었습니다.')
+            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            print('메일 전송 완료 [' + current_time + ']')
 
     df_before = df_after
