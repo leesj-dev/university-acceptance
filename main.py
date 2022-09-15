@@ -170,7 +170,7 @@ def push_html(df):
     html_body = html_body.replace('table border="1"', 'table')
     html_final = html_text + html_body + '</body>'
 
-    with open('index.html', 'w') as html_file:
+    with open('index.html', 'w', encoding='utf-8') as html_file:
         html_file.write(html_final)
 
     repo = Repo()
@@ -189,7 +189,7 @@ push_html(df_before)
 while True:
     # 최소 업데이트 주기는 10분 단위임
     min = int(datetime.now().strftime("%M")[-1])
-    sec  = int(datetime.now().strftime("%S"))
+    sec = int(datetime.now().strftime("%S"))
     total_sec = 600 - 60 * min - sec
     time.sleep(total_sec + 20)  # 여유를 주기 위해, 20초 정도 추가
 
