@@ -57,9 +57,10 @@ class Department:
                 loc = time_string.find('오전')
                 time_string = time_string[0 : loc] + time_string[loc + 3 : len(time_string) + 1]
             elif '오후' in time_string:
-                loc = time_string.find('오후')
-                new_time = int(time_string[loc + 3 : loc + 5]) + 12
-                time_string = time_string[0 : loc] + new_time + time_string[loc + 5: len(time_string) + 1]
+                loc1 = time_string.find('오후')
+                loc2 = time_string.find(':')
+                new_time = str(int(time_string[loc1 + 3 : loc2]) + 12)
+                time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1: len(time_string) + 1]
 
         return time_string
 
