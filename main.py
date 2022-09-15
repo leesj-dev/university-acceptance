@@ -54,16 +54,27 @@ class Department:
             time_string = time_string.replace('-', '/')
 
             if '오전' in time_string:
-                loc = time_string.find('오전')
-                time_string = time_string[0 : loc] + time_string[loc + 3 : len(time_string) + 1]
+                loc1 = time_string.find('오전')
+                loc2 = time_string.find(':')
+                if int(time_string[loc1 + 3 : loc2]) == 12:
+                    new_time = '00'
+
+                elif int(time_string[loc1 + 3 : loc2]) < 10:
+                    new_time = '0' + time_string[loc1 + 3 : loc2]
+
+                else:
+                    new_time = time_string[loc1 + 3 : loc2]
+
             elif '오후' in time_string:
                 loc1 = time_string.find('오후')
                 loc2 = time_string.find(':')
                 if int(time_string[loc1 + 3 : loc2]) == 12:
-                    new_time = time_string[loc1 + 3 : loc2]
+                    new_time = '12'
+
                 else:
                     new_time = str(int(time_string[loc1 + 3 : loc2]) + 12)
-                time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1: len(time_string) + 1]
+
+            time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1: len(time_string) + 1]
 
         return time_string
 
