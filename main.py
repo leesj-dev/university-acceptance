@@ -25,13 +25,13 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 
 
 class Department:
-    def __init__(self, path, plist, time):
+    def __init__(self, path, plist, timestamp):
         self.path = path
         self.plist = plist
         self.accepted_path = path + plist[0]
         self.sent_path = path + plist[1]
         self.rate_path = path + plist[2]
-        self.time_path = time
+        self.timestamp = timestamp
 
     # 모집 인원
     def accepted(self):
@@ -47,7 +47,7 @@ class Department:
 
     # 기준 시각
     def time(self):
-        time_string = driver.find_element(By. XPATH, self.time_path).text
+        time_string = driver.find_element(By. XPATH, self.timestamp).text
 
         # 유웨이
         if '분' in time_string:
@@ -59,7 +59,7 @@ class Department:
             time_string = time_string.replace('분', '')
 
         # 진학사
-        else:
+        elif '오전' in time_string or '오후' in time_string:
             time_string = time_string.split('현', 1)[0]
             time_string = time_string.replace('-', '/')
 
@@ -84,13 +84,13 @@ class Department:
                 else:
                     new_time = str(int(time_string[loc1 + 3 : loc2]) + 12)
 
-            time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1: len(time_string) + 1]
+            time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1 : len(time_string)]
 
         return time_string
 
 
-def list_generator(item):
-    item_list = [item.accepted(), item.sent(), item.rate(), item.time()]
+def list_generator(department):
+    item_list = [department.accepted(), department.sent(), department.rate(), department.time()]
     return item_list
 
 iterations = 1
