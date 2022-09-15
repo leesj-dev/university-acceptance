@@ -149,21 +149,15 @@ def get_info():
 # push할 HTML
 def push_html(df):
     html_text = '''<head>
-    <meta name="viewport" content="width=device-width" charset="UTF-8" http-equiv="refresh" content="60" />
+    <meta name="viewport" content="width=device-width" initial-scale="1" charset="UTF-8" http-equiv="refresh" content="60" />
     <title>실시간 경쟁률</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300&display=swap" rel="stylesheet">
-    <style>
-    * {font-family: 'IBM Plex Sans KR', sans-serif;}
-    td {text-align: center;}
-    table {margin-left:auto; margin-right: auto;}
-    table, td, th {border-collapse: collapse; border: 1px solid black; text-align: center;}
-    td, th {padding: 5px 15px;}
-    </style>
+    <link rel="stylesheet" href="styles.css"
     </head>
     <body>
-    <h1 style="font-size:30" text-align="center">실시간 경쟁률</h1>
+    <h1>실시간 경쟁률</h1>
     '''
 
     html_body = df.to_html().replace(' style="text-align: right;"', '')
