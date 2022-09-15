@@ -28,11 +28,5 @@ th {
 
 td,
 th {
-    padding: 5px 12px;
-}
-
-@media (max-width: 500px) {
-    table{
-        font-size: 2vw;
-    }
+    padding: 0.8vw 2vw;
 }
