@@ -163,7 +163,7 @@ def push_html(df):
     </style>
     </head>
     <body>
-    <h1 style="font-size:30" align="center">실시간 경쟁률</h1>
+    <h1 style="font-size:30" text-align="center">실시간 경쟁률</h1>
     '''
 
     html_body = df.to_html().replace(' style="text-align: right;"', '')
