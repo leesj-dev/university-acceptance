@@ -136,7 +136,8 @@ def get_info():
 
 def push_html(df):
     html_text = '''<head>
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" charset="UTF-8" http-equiv="refresh" content="60">
+    <title>실시간 경쟁률</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300&display=swap" rel="stylesheet">
@@ -173,14 +174,15 @@ push_html(df_before)
 while True:
     time.sleep(60)
     df_after = get_info()
-    df_before_rmvtime = df_before.drop(columns=['기준 시각'])
-    df_after_rmvtime = df_after.drop(columns=['기준 시각'])
 
-    if not df_before_rmvtime.equals(df_after_rmvtime):
+    if not df_before.equals(df_after):
+
         push_html(df_after)
         print('Push Completed.')
 
-        df_diff = df_before.compare(df_after, align_axis=1, keep_shape=False, keep_equal=False)
+        df_before_rmvtime = df_before.drop(columns=['기준 시각'])
+        df_after_rmvtime = df_after.drop(columns=['기준 시각'])
+        df_diff = df_before_rmvtime.compare(df_after_rmvtime, align_axis=1, keep_shape=False, keep_equal=False)
         changes = []
         message = '원서 접수 경쟁률이 변경되었습니다.\n'
 
