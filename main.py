@@ -22,12 +22,13 @@ chrome_options.add_argument('--start-maximized')
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
 class Department:
-    def __init__(self, path, plist):
+    def __init__(self, path, plist, time):
         self.path = path
         self.plist = plist
         self.accepted_path = path + plist[0]
         self.sent_path = path + plist[1]
         self.rate_path = path + plist[2]
+        self.time_path = time
 
     def accepted(self):
         return driver.find_element(By. XPATH, self.accepted_path).text
@@ -38,8 +39,32 @@ class Department:
     def rate(self):
         return driver.find_element(By. XPATH, self.rate_path).text
 
+    def time(self):
+        time_string = driver.find_element(By. XPATH, self.time_path).text
+        if '분' in time_string:
+            time_string = time_string.split('분', 1)[0] + '분'
+            time_string = time_string.replace('년 ', '/')
+            time_string = time_string.replace('월 ', '/')
+            time_string = time_string.replace('일', '')
+            time_string = time_string.replace('시 ', ':')
+            time_string = time_string.replace('분', '')
+
+        else:
+            time_string = time_string.split('현', 1)[0]
+            time_string = time_string.replace('-', '/')
+
+            if '오전' in time_string:
+                loc = time_string.find('오전')
+                time_string = time_string[0 : loc] + time_string[loc + 3 : len(time_string) + 1]
+            elif '오후' in time_string:
+                loc = time_string.find('오후')
+                new_time = int(time_string[loc + 3 : loc + 5]) + 12
+                time_string = time_string[0 : loc] + new_time + time_string[loc + 5: len(time_string) + 1]
+
+        return time_string
+
 def list_generator(item):
-    item_list = [item.accepted(), item.sent(), item.rate()]
+    item_list = [item.accepted(), item.sent(), item.rate(), item.time()]
     return item_list
 
 iterations = 1
@@ -50,45 +75,45 @@ while iterations < 6:
 tabs = driver.window_handles
 
 def get_info():
-    col = ['모집 인원', '지원자 수', '경쟁률']
+    col = ['모집 인원', '지원자 수', '경쟁률', '기준 시각']
     ind = ['울산대 지역인재', '부산대 지역인재', '경희대 네오르네상스', '한양대 일반', '고려대 학업우수', '아주대 ACE']
-    con = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    con = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     df = pd.DataFrame(con, columns=col, index=ind)
 
     # TAB_1: 울산대 지역인재
     driver.switch_to.window(tabs[0])
     driver.get('http://ratio.uwayapply.com/Sl5KVzgmQzpKZiUmOiZKcGZUZg==')
-    ulsan = Department('//*[@id="Tr_02B02034_002080000"]/td', ['[3]', '[4]', '[5]/font/b'])
+    ulsan = Department('//*[@id="Tr_02B02034_002080000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
     df.loc['울산대 지역인재'] = list_generator(ulsan)
 
     # TAB_2: 부산대 지역인재
     driver.switch_to.window(tabs[1])
     driver.get('http://addon.jinhakapply.com/RatioV1/RatioH/Ratio12100301.html')
-    pusan = Department('//*[@id="SelType4F"]/table/tbody/tr[29]/td', ['[3]', '[4]', '[5]'])
+    pusan = Department('//*[@id="SelType4F"]/table/tbody/tr[29]/td', ['[3]', '[4]', '[5]'], '//*[@id="RatioTime"]')
     df.loc['부산대 지역인재'] = list_generator(pusan)
 
     # TAB_3: 경희대 네오르네상스
     driver.switch_to.window(tabs[2])
     driver.get('http://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSnBmVGY=')
-    kyunghee = Department('//*[@id="Tr_01312_000700000"]/td', ['[3]', '[4]', '[5]/font/b'])
+    kyunghee = Department('//*[@id="Tr_01312_000700000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
     df.loc['경희대 네오르네상스'] = list_generator(kyunghee)
 
     # TAB_4: 한양대 일반
     driver.switch_to.window(tabs[3])
     driver.get('http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11640191.html')
-    hanyang = Department('//*[@id="SelType4B"]/table/tbody/tr[23]/td', ['[3]', '[4]', '[5]'])
+    hanyang = Department('//*[@id="SelType4B"]/table/tbody/tr[23]/td', ['[3]', '[4]', '[5]'], '//*[@id="RatioTime"]')
     df.loc['한양대 일반'] = list_generator(hanyang)
 
     # TAB_5: 고려대 학업우수
     driver.switch_to.window(tabs[4])
     driver.get('http://ratio.uwayapply.com/Sl5KOGB9YTlKZiUmOiZKcGZUZg==')
-    korea = Department('//*[@id="Tr_0151_000950000"]/td', ['[3]', '[4]', '[5]/font/b'])
+    korea = Department('//*[@id="Tr_0151_000950000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
     df.loc['고려대 학업우수'] = list_generator(korea)
 
     # TAB_6: 아주대 ACE
     driver.switch_to.window(tabs[5])
     driver.get('http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11040291.html')
-    ajou = Department('//*[@id="SelType402"]/table/tbody/tr[21]/td', ['[2]', '[3]', '[4]'])
+    ajou = Department('//*[@id="SelType402"]/table/tbody/tr[21]/td', ['[2]', '[3]', '[4]'], '//*[@id="RatioTime"]')
     df.loc['아주대 ACE'] = list_generator(ajou)
 
     return df
