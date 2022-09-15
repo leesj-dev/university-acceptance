@@ -188,32 +188,36 @@ while True:
     time.sleep(60)
     df_after = get_info()
 
+    # 기준 시각이 바뀔 때: push는 무조건 해야 함
     if not df_before.equals(df_after):
-
         push_html(df_after)
-        print('Push Completed.')
+        print('푸쉬가 완료되었습니다.')
 
-        # 메일 내용
+        # 지원자 수가 바뀔 때만 메일을 보내야 함
         df_before_rmvtime = df_before.drop(columns=['기준 시각'])
         df_after_rmvtime = df_after.drop(columns=['기준 시각'])
-        df_diff = df_before_rmvtime.compare(df_after_rmvtime, align_axis=1, keep_shape=False, keep_equal=False)
-        changes = []
-        message = '원서 접수 경쟁률이 변경되었습니다.\n'
 
-        for index, row in df_diff.iterrows():
-            changes.append([index, row[('지원자 수', 'self')], row[('지원자 수', 'other')], row[('경쟁률', 'self')], row[('경쟁률', 'other')]])
+        if not df_before_rmvtime.equals(df_after_rmvtime):
+            df_diff = df_before_rmvtime.compare(df_after_rmvtime, align_axis=1, keep_shape=False, keep_equal=False)
+            changes = []
+            message = '원서 접수 경쟁률이 변경되었습니다.\n'
 
-        for item in changes:
-            message += item[0] + " - 지원자 수: <b>" + item[1] + "</b>명 → <b>" + item[2] + "</b>명 / 경쟁률: <b>" + item[3] + "</b> → <b>" + item[4] + "</b>\n"
+            for index, row in df_diff.iterrows():
+                changes.append([index, row[('지원자 수', 'self')], row[('지원자 수', 'other')], row[('경쟁률', 'self')], row[('경쟁률', 'other')]])
 
-        # 메일 전송
-        msg = MIMEText(message, 'html')
-        msg["Subject"] = '경쟁률 변경 감지'
-        msg["From"] = id
-        msg["To"] = id
+            for item in changes:
+                message += item[0] + " - 지원자 수: <b>" + item[1] + "</b>명 → <b>" + item[2] + "</b>명 / 경쟁률: <b>" + item[3] + "</b> → <b>" + item[4] + "</b>\n"
 
-        with smtplib.SMTP_SSL("smtp.naver.com", 465) as smtp:
-            smtp.login(id, pw)
-            smtp.sendmail(id, id, msg.as_string())
+            # 메일 전송
+            msg = MIMEText(message, 'html')
+            msg["Subject"] = '경쟁률 변경 감지'
+            msg["From"] = id
+            msg["To"] = id
+
+            with smtplib.SMTP_SSL("smtp.naver.com", 465) as smtp:
+                smtp.login(id, pw)
+                smtp.sendmail(id, id, msg.as_string())
+
+            print('메일이 전송되었습니다.')
 
     df_before = df_after
