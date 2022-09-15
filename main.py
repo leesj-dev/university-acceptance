@@ -59,7 +59,10 @@ class Department:
             elif '오후' in time_string:
                 loc1 = time_string.find('오후')
                 loc2 = time_string.find(':')
-                new_time = str(int(time_string[loc1 + 3 : loc2]) + 12)
+                if int(time_string[loc1 + 3 : loc2]) == 12:
+                    new_time = time_string[loc1 + 3 : loc2]
+                else:
+                    new_time = str(int(time_string[loc1 + 3 : loc2]) + 12)
                 time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1: len(time_string) + 1]
 
         return time_string
@@ -159,8 +162,10 @@ push_html(df_before)
 while True:
     time.sleep(60)
     df_after = get_info()
+    df_before_rmvtime = df_before.drop(columns=['기준 시각'])
+    df_after_rmvtime = df_after.drop(columns=['기준 시각'])
 
-    if not df_before.equals(df_after):
+    if not df_before_rmvtime.equals(df_after_rmvtime):
         push_html(df_after)
         print('Push Completed.')
 
