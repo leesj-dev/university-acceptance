@@ -130,7 +130,7 @@ def get_info():
 # push할 HTML
 def push_html(df):
     html_text = '''<head>
-    <meta name="viewport" content="width=device-width" initial-scale="1" charset="UTF-8" http-equiv="refresh" content="60" />
+    <meta name="viewport" content="width=device-width" initial-scale="1" charset="UTF-8" />
     <title>실시간 경쟁률</title>
     <link rel="stylesheet" href="styles.css">
     </head>
