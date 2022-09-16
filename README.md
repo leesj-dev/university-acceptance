@@ -44,5 +44,8 @@ df.loc['고려대 학업우수'] = list_generator(korea)
 
 #### 3. push하기
 * 우선 수동으로 Github에 한 번 push를 해줍니다.
-* 이후  `Settings > Pages`에 들어가서 Github Pages를 활성화해줍니다.
+* 이후  `Settings > Pages`에 들어가서 Github Pages를 
+활성화해줍니다.
 * 마지막으로  `main.py`를 실행하면 자동으로 Github에 `index.html`이 주기적으로 push가 되며, 이후 Github Pages에서 호스팅이 완료됩니다. push한 html이 웹페이지에 반영되기까지는 약 1분 정도 소요됩니다.
+* 웹사이트 예시 이미지
+<img width="838" alt="예시" src="https://user-images.githubusercontent.com/104193215/190553223-42dd7ce5-1d97-4dbf-a426-3d3e41c43710.png">
