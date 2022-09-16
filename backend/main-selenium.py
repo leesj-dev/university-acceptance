@@ -87,12 +87,12 @@ class Department:
 
             time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1 : len(time_string)]
 
+        # else: 접수완료 (최종현황)
         return time_string
 
-
-def list_generator(department):
-    item_list = [department.accepted(), department.sent(), department.rate(), department.time()]
-    return item_list
+    def list_generator(self):
+        item_list = [self.accepted(), self.sent(), self.rate(), self.time()]
+        return item_list
 
 iterations = 1
 while iterations < 6:
@@ -108,41 +108,41 @@ def get_info():
     con = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     df = pd.DataFrame(con, columns=col, index=ind)
 
-    # TAB_0: 울산대 지역인재
+    # TAB_0: 울산대 지역인재 (유웨이)
     driver.switch_to.window(tabs[0])
     driver.get('http://ratio.uwayapply.com/Sl5KVzgmQzpKZiUmOiZKcGZUZg==')
     ulsan = Department('//*[@id="Tr_02B02034_002080000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
-    df.loc['울산대 지역인재'] = list_generator(ulsan)
+    df.loc['울산대 지역인재'] = ulsan.list_generator()
 
-    # TAB_1: 부산대 지역인재
+    # TAB_1: 부산대 지역인재 (진학사)
     driver.switch_to.window(tabs[1])
     driver.get('http://addon.jinhakapply.com/RatioV1/RatioH/Ratio12100301.html')
     pusan = Department('//*[@id="SelType4F"]/table/tbody/tr[29]/td', ['[3]', '[4]', '[5]'], '//*[@id="RatioTime"]')
-    df.loc['부산대 지역인재'] = list_generator(pusan)
+    df.loc['부산대 지역인재'] = pusan.list_generator()
 
-    # TAB_2: 경희대 네오르네상스
+    # TAB_2: 경희대 네오르네상스 (유웨이)
     driver.switch_to.window(tabs[2])
     driver.get('http://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSnBmVGY=')
     kyunghee = Department('//*[@id="Tr_01312_000700000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
-    df.loc['경희대 네오르네상스'] = list_generator(kyunghee)
+    df.loc['경희대 네오르네상스'] = kyunghee.list_generator()
 
-    # TAB_3: 한양대 일반
+    # TAB_3: 한양대 일반 (진학사)
     driver.switch_to.window(tabs[3])
     driver.get('http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11640191.html')
     hanyang = Department('//*[@id="SelType4B"]/table/tbody/tr[23]/td', ['[3]', '[4]', '[5]'], '//*[@id="RatioTime"]')
-    df.loc['한양대 일반'] = list_generator(hanyang)
+    df.loc['한양대 일반'] = hanyang.list_generator()
 
-    # TAB_4: 고려대 학업우수
+    # TAB_4: 고려대 학업우수 (유웨이)
     driver.switch_to.window(tabs[4])
     driver.get('http://ratio.uwayapply.com/Sl5KOGB9YTlKZiUmOiZKcGZUZg==')
     korea = Department('//*[@id="Tr_0151_000950000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
-    df.loc['고려대 학업우수'] = list_generator(korea)
+    df.loc['고려대 학업우수'] = korea.list_generator()
 
-    # TAB_5: 아주대 ACE
+    # TAB_5: 아주대 ACE (진학사)
     driver.switch_to.window(tabs[5])
     driver.get('http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11040291.html')
     ajou = Department('//*[@id="SelType402"]/table/tbody/tr[21]/td', ['[2]', '[3]', '[4]'], '//*[@id="RatioTime"]')
-    df.loc['아주대 ACE'] = list_generator(ajou)
+    df.loc['아주대 ACE'] = ajou.list_generator()
 
     return df
 
@@ -183,7 +183,7 @@ while True:
     min = int(datetime.now().strftime("%M")[-1])
     sec = int(datetime.now().strftime("%S"))
     total_sec = 600 - 60 * min - sec
-    time.sleep(total_sec + 20)  # 여유를 주기 위해, 20초 정도 추가
+    time.sleep(total_sec + 10)  # 여유를 주기 위해, 10초 정도 추가
 
     df_after = get_info()
 

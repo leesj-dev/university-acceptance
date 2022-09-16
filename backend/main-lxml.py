@@ -16,31 +16,31 @@ pw = os.getenv('pw')
 
 class Department:
     def __init__(self, page, path, plist, timestamp):
-        self.page = requests.get(page)
-        self.accepted_path = path + plist[0] + '/text()'
-        self.sent_path = path + plist[1] + '/text()'
-        self.rate_path = path + plist[2] + '/text()'
+        if '/tbody' in path:  # lxml은 tbody를 간주하지 않으므로, 전처리로 없애야 함
+            path = path.replace('/tbody', '')
+
+        self.page = page
+        self.accepted_path = path + plist[0]
+        self.sent_path = path + plist[1]
+        self.rate_path = path + plist[2]
         self.timestamp = timestamp
+        self.tree = html.fromstring(requests.get(self.page).content)
 
     # 모집 인원
     def accepted(self):
-        tree = html.fromstring(self.page.content)
-        return tree.xpath(self.accepted_path)
+        return self.tree.xpath(self.accepted_path)[0].text
 
     # 지원자 수
     def sent(self):
-        tree = html.fromstring(self.page.content)
-        return tree.xpath(self.sent_path)
+        return self.tree.xpath(self.sent_path)[0].text
 
     # 경쟁률
     def rate(self):
-        tree = html.fromstring(self.page.content)
-        return tree.xpath(self.rate_path)
+        return self.tree.xpath(self.rate_path)[0].text
 
     # 기준 시각
     def time(self):
-        tree = html.fromstring(self.page.content)
-        time_string = tree.xpath(self.timestamp)
+        time_string = self.tree.xpath(self.timestamp)[0].text
 
         # 유웨이
         if '분' in time_string:
@@ -80,12 +80,12 @@ class Department:
 
             time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1 : len(time_string)]
 
+        # else: 접수완료 (최종현황)
         return time_string
 
-
-def list_generator(department):
-    item_list = [department.accepted(), department.sent(), department.rate(), department.time()]
-    return item_list
+    def list_generator(self):
+        item_list = [self.accepted(), self.sent(), self.rate(), self.time()]
+        return item_list
 
 # 크롤링
 def get_info():
@@ -94,35 +94,35 @@ def get_info():
     con = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     df = pd.DataFrame(con, columns=col, index=ind)
 
-    # PAGE_1: 울산대 지역인재
+    # PAGE_1: 울산대 지역인재 (유웨이)
     page1 = 'http://ratio.uwayapply.com/Sl5KVzgmQzpKZiUmOiZKcGZUZg=='
     ulsan = Department(page1, '//*[@id="Tr_02B02034_002080000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
-    df.loc['울산대 지역인재'] = list_generator(ulsan)
+    df.loc['울산대 지역인재'] = ulsan.list_generator()
 
-    # PAGE_2: 부산대 지역인재
+    # PAGE_2: 부산대 지역인재 (진학사)
     page2 = 'http://addon.jinhakapply.com/RatioV1/RatioH/Ratio12100301.html'
     pusan = Department(page2, '//*[@id="SelType4F"]/table/tbody/tr[29]/td', ['[3]', '[4]', '[5]'], '//*[@id="RatioTime"]')
-    df.loc['부산대 지역인재'] = list_generator(pusan)
+    df.loc['부산대 지역인재'] = pusan.list_generator()
 
-    # PAGE_3: 경희대 네오르네상스
+    # PAGE_3: 경희대 네오르네상스 (유웨이)
     page3 = 'http://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSnBmVGY='
     kyunghee = Department(page3, '//*[@id="Tr_01312_000700000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
-    df.loc['경희대 네오르네상스'] = list_generator(kyunghee)
+    df.loc['경희대 네오르네상스'] = kyunghee.list_generator()
 
-    # PAGE_4: 한양대 일반
+    # PAGE_4: 한양대 일반 (진학사)
     page4 = 'http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11640191.html'
     hanyang = Department(page4, '//*[@id="SelType4B"]/table/tbody/tr[23]/td', ['[3]', '[4]', '[5]'], '//*[@id="RatioTime"]')
-    df.loc['한양대 일반'] = list_generator(hanyang)
+    df.loc['한양대 일반'] = hanyang.list_generator()
 
-    # PAGE_5: 고려대 학업우수
+    # PAGE_5: 고려대 학업우수 (유웨이)
     page5 = 'http://ratio.uwayapply.com/Sl5KOGB9YTlKZiUmOiZKcGZUZg=='
     korea = Department(page5, '//*[@id="Tr_0151_000950000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
-    df.loc['고려대 학업우수'] = list_generator(korea)
+    df.loc['고려대 학업우수'] = korea.list_generator()
 
-    # PAGE_6: 아주대 ACE
+    # PAGE_6: 아주대 ACE (진학사)
     page6 = 'http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11040291.html'
     ajou = Department(page6, '//*[@id="SelType402"]/table/tbody/tr[21]/td', ['[2]', '[3]', '[4]'], '//*[@id="RatioTime"]')
-    df.loc['아주대 ACE'] = list_generator(ajou)
+    df.loc['아주대 ACE'] = ajou.list_generator()
 
     return df
 
