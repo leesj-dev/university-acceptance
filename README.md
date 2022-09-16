@@ -4,16 +4,23 @@
 
 ## How to Use
 #### 1. env 설정
-git을 clone한 다음, `backend` 폴더에 `.env` 파일을 생성하고 아래 내용을 넣습니다. `id`에는 NAVER 아이디 (@naver.com 포함), `pw`에는 비밀번호를 넣습니다. `215`번 줄을 수정하면 다른 이메일 도메인도 사용할 수 있습니다.
+* git을 clone한 다음, `pip install -r requirements.txt`를 터미널에 입력하여 필요한 라이브러리들을 설치합니다.
+* `backend` 폴더에 `.env` 파일을 생성하고 아래 내용을 넣습니다. `id`에는 NAVER 아이디 (@naver.com 포함), `pw`에는 비밀번호를 넣습니다. (`215`번 줄을 수정하면 다른 이메일 도메인도 사용할 수 있습니다.)
 ```
 id = YOUR_EMAIL_ID@naver.com
 pw = YOUR_EMAIL_PASSWORD
 ```
 
 #### 2. 학과 설정
-`107`번 줄에는 경쟁률을 모니터링할 학과를 넣고,  `111` ~ `145` 번 줄에는 링크 및 XPath을 넣습니다. 기본적으로 진학사는 진학사끼리, 유웨이는 유웨이끼리 거의 같으나 일부 예외가 있으므로 반드시 확인 후 넣어주세요.
+* `backend` 폴더의 `main.py` (lxml으로 크롤링) 또는 `selenium.py` (Selenium으로 크롤링)을 엽니다. lxml 방식이 약 3배 더 빠르므로, 가급적이면 `main.py`를 이용해주세요.
+* `selenium.py`를 사용하려면, `requirements.txt`에 아래를 추가해야 합니다.
+```
+selenium==4.4.3
+webdriver_manager==3.8.3
+```
+* `main.py` 기준으로, `93`번 줄에는 경쟁률을 모니터링할 학과를 넣고,  `97` ~ `125` 번 줄에는 링크 및 XPath을 넣습니다. 기본적으로 진학사는 진학사끼리, 유웨이는 유웨이끼리 형식이 거의 같으나 일부 예외가 있으므로 **반드시 확인 후 넣어주세요**.
 
-‘고려대 학업우수 전형 의예과’를 예로 들어보겠습니다.
+‘고려대 학업우수 의예과’를 예로 들어보겠습니다.
 * 경쟁률을 표시하는 링크를 넣습니다.
 ```
 driver.get('http://ratio.uwayapply.com/Sl5KOGB9YTlKZiUmOiZKcGZUZg==')
@@ -38,4 +45,4 @@ df.loc['고려대 학업우수'] = list_generator(korea)
 #### 3. push하기
 * 우선 수동으로 Github에 한 번 push를 해줍니다.
 * 이후  `Settings > Pages`에 들어가서 Github Pages를 활성화해줍니다.
-* 마지막으로  `main.py`를 실행하면 자동으로 Github에 `index.html`이 주기적으로 push가 되며, 이후 Github Pages에서 호스팅이 완료됩니다. push한 것이 웹페이지에 반영되기까지는 약 1분 정도 소요됩니다.
+* 마지막으로  `main.py`를 실행하면 자동으로 Github에 `index.html`이 주기적으로 push가 되며, 이후 Github Pages에서 호스팅이 완료됩니다. push한 rrRUFRhkaNF 웹페이지에 반영되기까지는 약 1분 정도 소요됩니다.
