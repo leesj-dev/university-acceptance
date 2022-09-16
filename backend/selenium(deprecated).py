@@ -85,7 +85,7 @@ class Department:
                 else:
                     new_time = str(int(time_string[loc1 + 3 : loc2]) + 12)
 
-            time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1 : len(time_string)]
+            time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1 : len(time_string) - 1]
 
         # else: 접수완료 (최종현황)
         return time_string

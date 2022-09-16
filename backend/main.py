@@ -8,6 +8,7 @@ import requests
 import smtplib
 import time
 import os
+import xlwings
 
 # 초기 설정
 load_dotenv()
@@ -78,7 +79,7 @@ class Department:
                 else:
                     new_time = str(int(time_string[loc1 + 3 : loc2]) + 12)
 
-            time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1 : len(time_string)]
+            time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1 : len(time_string) - 1]
 
         # else: 접수완료 (최종현황)
         return time_string
@@ -154,49 +155,67 @@ def push_html(df):
     print('push 완료 [' + current_time + ']')
 
 
-# 최초 실행
-df_before = get_info()
-push_html(df_before)
+# 엑셀에 붙여넣음
+def paste_excel(df):
+    df_excel = df.drop(columns=['모집 인원'])
+    ws = xlwings.Book(os.getcwd() + '/backend/수시 원서.xlsx').sheets('Sheet1')
+    ws.range('J2:L7').options(pd.DataFrame, index=False, header=False).value = df_excel
 
-while True:
-    # 최소 업데이트 주기는 10분 단위임
-    min = int(datetime.now().strftime("%M")[-1])
-    sec = int(datetime.now().strftime("%S"))
-    total_sec = 600 - 60 * min - sec
-    time.sleep(total_sec + 10)  # 여유를 주기 위해, 10초 정도 추가
 
-    df_after = get_info()
+def process(mail_tf, excel_tf):
 
-    # 기준 시각이 바뀔 때: push는 무조건 해야 함
-    if not df_before.equals(df_after):
-        push_html(df_after)
+    # 최초 실행
+    df_before = get_info()
+    push_html(df_before)
 
-        # 지원자 수가 바뀔 때만 메일을 보내야 함
-        df_before_rmvtime = df_before.drop(columns=['기준 시각'])
-        df_after_rmvtime = df_after.drop(columns=['기준 시각'])
+    if excel_tf is True:
+        paste_excel(df_before)
 
-        if not df_before_rmvtime.equals(df_after_rmvtime):
-            df_diff = df_before_rmvtime.compare(df_after_rmvtime, align_axis=1, keep_shape=False, keep_equal=False)
-            changes = []
-            message = '원서 접수 경쟁률이 변경되었습니다.\n'
+    while True:
+        # 최소 업데이트 주기는 10분 단위임
+        min = int(datetime.now().strftime("%M")[-1])
+        sec = int(datetime.now().strftime("%S"))
+        total_sec = 600 - 60 * min - sec
+        time.sleep(total_sec + 10)  # 여유를 주기 위해, 10초 정도 추가
 
-            for index, row in df_diff.iterrows():
-                changes.append([index, row[('지원자 수', 'self')], row[('지원자 수', 'other')], row[('경쟁률', 'self')], row[('경쟁률', 'other')]])
+        df_after = get_info()
 
-            for item in changes:
-                message += item[0] + " - 지원자 수: <b>" + item[1] + "</b>명 → <b>" + item[2] + "</b>명 / 경쟁률: <b>" + item[3] + "</b> → <b>" + item[4] + "</b>\n"
+        # 기준 시각이 바뀔 때: push는 무조건 해야 함
+        if not df_before.equals(df_after):
+            push_html(df_after)
 
-            # 메일 전송
-            msg = MIMEText(message, 'html')
-            msg["Subject"] = '경쟁률 변경 감지'
-            msg["From"] = id
-            msg["To"] = id
+            if excel_tf is True:
+                paste_excel(df_after)
 
-            with smtplib.SMTP_SSL("smtp.naver.com", 465) as smtp:
-                smtp.login(id, pw)
-                smtp.sendmail(id, id, msg.as_string())
+            if mail_tf is True:
+                # 지원자 수가 바뀔 때만 메일을 보내야 함
+                df_before_rmvtime = df_before.drop(columns=['기준 시각'])
+                df_after_rmvtime = df_after.drop(columns=['기준 시각'])
 
-            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            print('메일 전송 완료 [' + current_time + ']')
+                if not df_before_rmvtime.equals(df_after_rmvtime):
+                    df_diff = df_before_rmvtime.compare(df_after_rmvtime, align_axis=1, keep_shape=False, keep_equal=False)
+                    changes = []
+                    message = '원서 접수 경쟁률이 변경되었습니다.\n'
 
-    df_before = df_after
+                    for index, row in df_diff.iterrows():
+                        changes.append([index, row[('지원자 수', 'self')], row[('지원자 수', 'other')], row[('경쟁률', 'self')], row[('경쟁률', 'other')]])
+
+                    for item in changes:
+                        message += item[0] + " - 지원자 수: <b>" + item[1] + "</b>명 → <b>" + item[2] + "</b>명 / 경쟁률: <b>" + item[3] + "</b> → <b>" + item[4] + "</b>\n"
+
+                    # 메일 전송
+                    msg = MIMEText(message, 'html')
+                    msg["Subject"] = '경쟁률 변경 감지'
+                    msg["From"] = id
+                    msg["To"] = id
+
+                    with smtplib.SMTP_SSL("smtp.naver.com", 465) as smtp:
+                        smtp.login(id, pw)
+                        smtp.sendmail(id, id, msg.as_string())
+
+                    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    print('메일 전송 완료 [' + current_time + ']')
+
+        df_before = df_after
+
+process(True, True)
