@@ -96,33 +96,33 @@ def get_info():
     df = pd.DataFrame(con, columns=col, index=ind)
 
     # PAGE_1: 울산대 지역인재 (유웨이)
-    page1 = 'http://ratio.uwayapply.com/Sl5KVzgmQzpKZiUmOiZKcGZUZg=='
-    ulsan = Department(page1, '//*[@id="Tr_02B02034_002080000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
+    PAGE_1 = 'http://ratio.uwayapply.com/Sl5KVzgmQzpKZiUmOiZKcGZUZg=='
+    ulsan = Department(PAGE_1, '//*[@id="Tr_02B02034_002080000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
     df.loc['울산대 지역인재'] = ulsan.list_generator()
 
     # PAGE_2: 부산대 지역인재 (진학사)
-    page2 = 'http://addon.jinhakapply.com/RatioV1/RatioH/Ratio12100301.html'
-    pusan = Department(page2, '//*[@id="SelType4F"]/table/tbody/tr[29]/td', ['[3]', '[4]', '[5]'], '//*[@id="RatioTime"]')
+    PAGE_2 = 'http://addon.jinhakapply.com/RatioV1/RatioH/Ratio12100301.html'
+    pusan = Department(PAGE_2, '//*[@id="SelType4F"]/table/tbody/tr[29]/td', ['[3]', '[4]', '[5]'], '//*[@id="RatioTime"]')
     df.loc['부산대 지역인재'] = pusan.list_generator()
 
     # PAGE_3: 경희대 네오르네상스 (유웨이)
-    page3 = 'http://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSnBmVGY='
-    kyunghee = Department(page3, '//*[@id="Tr_01312_000700000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
+    PAGE_3 = 'http://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSnBmVGY='
+    kyunghee = Department(PAGE_3, '//*[@id="Tr_01312_000700000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
     df.loc['경희대 네오르네상스'] = kyunghee.list_generator()
 
     # PAGE_4: 한양대 일반 (진학사)
-    page4 = 'http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11640191.html'
-    hanyang = Department(page4, '//*[@id="SelType4B"]/table/tbody/tr[23]/td', ['[3]', '[4]', '[5]'], '//*[@id="RatioTime"]')
+    PAGE_4 = 'http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11640191.html'
+    hanyang = Department(PAGE_4, '//*[@id="SelType4B"]/table/tbody/tr[23]/td', ['[3]', '[4]', '[5]'], '//*[@id="RatioTime"]')
     df.loc['한양대 일반'] = hanyang.list_generator()
 
     # PAGE_5: 고려대 학업우수 (유웨이)
-    page5 = 'http://ratio.uwayapply.com/Sl5KOGB9YTlKZiUmOiZKcGZUZg=='
-    korea = Department(page5, '//*[@id="Tr_0151_000950000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
+    PAGE_5 = 'http://ratio.uwayapply.com/Sl5KOGB9YTlKZiUmOiZKcGZUZg=='
+    korea = Department(PAGE_5, '//*[@id="Tr_0151_000950000"]/td', ['[3]', '[4]', '[5]/font/b'], '//*[@id="ID_DateStr"]/label')
     df.loc['고려대 학업우수'] = korea.list_generator()
 
     # PAGE_6: 아주대 ACE (진학사)
-    page6 = 'http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11040291.html'
-    ajou = Department(page6, '//*[@id="SelType402"]/table/tbody/tr[21]/td', ['[2]', '[3]', '[4]'], '//*[@id="RatioTime"]')
+    PAGE_6 = 'http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11040291.html'
+    ajou = Department(PAGE_6, '//*[@id="SelType402"]/table/tbody/tr[21]/td', ['[2]', '[3]', '[4]'], '//*[@id="RatioTime"]')
     df.loc['아주대 ACE'] = ajou.list_generator()
 
     return df
