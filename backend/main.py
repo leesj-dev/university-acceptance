@@ -81,7 +81,9 @@ class Department:
 
             time_string = time_string[0 : loc1] + new_time + ':' + time_string[loc2 + 1 : len(time_string) - 1]
 
-        # else: 접수완료 (최종현황)
+        else:
+            time_string = '최종 현황'
+
         return time_string
 
     def list_generator(self):
