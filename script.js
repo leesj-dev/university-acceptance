@@ -20,12 +20,7 @@ class Department {
         this.pathArray = [path + plist[0], path + plist[1], path + plist[2], timestamp];
     }
     GetInfo() {
-        this.scrape = scrapeElement(this.page, this.pathArray);
-        this.accepted = this.scrape[0];
-        this.sent = this.scrape[1];
-        this.rate = this.scrape[2];
-        this.time_string = this.scrape[3];
-        return this.scrape;
+        return scrapeElement(this.page, this.pathArray);
     }
 }
 
