@@ -19,13 +19,13 @@ class Department {
         this.page = page;
         this.pathArray = [path + plist[0], path + plist[1], path + plist[2], timestamp];
     }
-    GetInfo() {
+    getInfo() {
         return scrapeElement(this.page, this.pathArray);
     }
 }
 
 updateHTML = function(name, dep) {
-    let depInfo = dep.GetInfo();
+    let depInfo = dep.getInfo();
     document.getElementById(Object.keys({name})[0]).innerHTML = "<th>" + name + "</th><td>" + depInfo[0] + "</td><td>" + depInfo[1] + "</td><td>" + depInfo[2] + "</td><td>" + depInfo[3] + "</td>";
     // Object.keys({name})[0]은 변수명을 반환함
 }
