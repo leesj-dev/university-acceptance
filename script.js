@@ -9,7 +9,7 @@ scrapeElement = function(link, pathArray) {
             }
         }
     };
-    xhr.open("GET", "https://proxy.cors.sh/" + link, false);  // CORS 위반 때문에 proxy server로 우회. ajax = false
+    xhr.open("GET", "https://proxy.cors.sh/" + link, false);  // CORS 위반 때문에 proxy server로 우회. ajax는 일단 false
     xhr.send();
     return arr;
 }
@@ -17,7 +17,26 @@ scrapeElement = function(link, pathArray) {
 class Department {
     constructor(page, path, plist, timestamp) {
         this.page = page;
-        this.pathArray = [path + plist[0], path + plist[1], path + plist[2], timestamp];
+        this.path = path;
+        this.plist = plist;
+        this.timestamp = timestamp;
+
+        //regex로 손볼 예정
+        if (timestamp.includes("분")) {  // 유웨이
+            timestamp = timestamp.split("년 ")[1];
+            timestamp = timestamp.replace("월 ", "/");
+            timestamp = timestamp.replace("일", "");
+            timestamp = timestamp.replace("시 ", ":");
+            timestamp = timestamp.split("분", 1)[0];
+        }
+
+        elif (timestamp.includes("오전") || timestamp.includes ("오후")) {  // 진학사
+            timestamp = timestamp.split("현")[0];
+            timestamp = timestamp.split("-", 1)[1];
+            timestamp = timestamp.replace("-", "/");
+        }
+
+        this.pathArray = [this.path + this.plist[0], this.path + this.plist[1], this.path + this.plist[2], this.timestamp];
     }
     getInfo() {
         return scrapeElement(this.page, this.pathArray);
