@@ -24,10 +24,10 @@ class Department {
     }
 }
 
-updateHTML = function(name, dep) {
+updateHTML = function(i, name, dep) {
+    let id = "NAME" + String(i + 1);
     let depInfo = dep.getInfo();
-    document.getElementById(Object.keys({name})[0]).innerHTML = "<th>" + name + "</th><td>" + depInfo[0] + "</td><td>" + depInfo[1] + "</td><td>" + depInfo[2] + "</td><td>" + depInfo[3] + "</td>";
-    // Object.keys({name})[0]은 변수명을 반환함
+    document.getElementById(id).innerHTML = "<th>" + name + "</th><td>" + depInfo[0] + "</td><td>" + depInfo[1] + "</td><td>" + depInfo[2] + "</td><td>" + depInfo[3] + "</td>";
 }
 
 // 유웨이
@@ -59,6 +59,6 @@ let dep6 = new Department(PAGE6, "#SelType402 > table > tbody > tr:nth-child(21)
 const names = [NAME1, NAME2, NAME3, NAME4, NAME5, NAME6];
 let deps = [dep1, dep2, dep3, dep4, dep5, dep6];
 for (let i = 0; i < names.length; i++) {
-    updateHTML(names[i], deps[i]);
+    updateHTML(i, names[i], deps[i]);
 }
 
