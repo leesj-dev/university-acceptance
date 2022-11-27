@@ -26,7 +26,8 @@ class Department {
 
 updateHTML = function(name, dep) {
     let depInfo = dep.GetInfo();
-    document.getElementById("PAGE_1").innerHTML = "<th>" + name + "</th><td>" + depInfo[0] + "</td><td>" + depInfo[1] + "</td><td>" + depInfo[2] + "</td><td>" + depInfo[3] + "</td>";
+    document.getElementById(Object.keys({name})[0]).innerHTML = "<th>" + name + "</th><td>" + depInfo[0] + "</td><td>" + depInfo[1] + "</td><td>" + depInfo[2] + "</td><td>" + depInfo[3] + "</td>";
+    // Object.keys({name})[0]은 변수명을 반환함
 }
 
 // 유웨이
