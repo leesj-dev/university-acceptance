@@ -20,21 +20,6 @@ class Department {
         this.path = path;
         this.plist = plist;
         this.timestamp = timestamp;
-
-        //regex로 손볼 예정
-        if (timestamp.includes("분")) {  // 유웨이
-            timestamp = timestamp.split("년 ")[1];
-            timestamp = timestamp.replace("월 ", "/");
-            timestamp = timestamp.replace("일", "");
-            timestamp = timestamp.replace("시 ", ":");
-            timestamp = timestamp.split("분", 1)[0];
-        }
-
-        elif (timestamp.includes("오전") || timestamp.includes("오후")) {  // 진학사
-            timestamp = timestamp.split("현")[0];
-            timestamp = timestamp.split("-", 1)[1];
-            timestamp = timestamp.replace("-", "/");
-        }
         this.pathArray = [this.path + this.plist[0], this.path + this.plist[1], this.path + this.plist[2], this.timestamp];
     }
     getInfo() {
