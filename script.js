@@ -25,7 +25,7 @@ class Department {
 }
 
 updateHTML = function(i, name, dep) {
-    let id = "NAME" + String(i + 1);
+    let id = "PAGE" + String(i + 1);
     let depInfo = dep.getInfo();
     document.getElementById(id).innerHTML = "<th>" + name + "</th><td>" + depInfo[0] + "</td><td>" + depInfo[1] + "</td><td>" + depInfo[2] + "</td><td>" + depInfo[3] + "</td>";
 }
