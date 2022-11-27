@@ -54,7 +54,7 @@ let dep5 = new Department(PAGE5, "#SelType4B > table > tbody > tr:nth-child(23) 
 
 const NAME6 = "아주대 ACE";
 const PAGE6 = "http://addon.jinhakapply.com/RatioV1/RatioH/Ratio11040291.html";
-let dep6 = new Department(PAGE6, "#SelType402 > table > tbody > tr:nth-child(21) > td:nth-child", new Array["(2)", "(3)", "(4)"], "#RatioTime");
+let dep6 = new Department(PAGE6, "#SelType402 > table > tbody > tr:nth-child(21) > td:nth-child", ["(2)", "(3)", "(4)"], "#RatioTime");
 
 const names = [NAME1, NAME2, NAME3, NAME4, NAME5, NAME6];
 let deps = [dep1, dep2, dep3, dep4, dep5, dep6];
