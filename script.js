@@ -9,7 +9,7 @@ scrapeElement = function(link, pathArray) {
             }
         }
     };
-    xhr.open("GET", "https://proxy.cors.sh/" + link, true);  // CORS 위반 때문에 proxy server로 우회.
+    xhr.open("GET", "https://proxy.cors.sh/" + link, false);  // CORS 위반 때문에 proxy server로 우회. ajax = false
     xhr.send();
     return arr;
 }
