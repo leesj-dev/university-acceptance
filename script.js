@@ -22,16 +22,16 @@ class Department {
         this.timestamp = timestamp;
     }
     getInfo() {
-        var pathArray = [this.path + this.plist[0], this.path + this.plist[1], this.path + this.plist[2], this.timestamp];
-        var result = scrapeElement(this.page, pathArray);
+        let pathArray = [this.path + this.plist[0], this.path + this.plist[1], this.path + this.plist[2], this.timestamp];
+        let result = scrapeElement(this.page, pathArray);
         if (result[3].includes("분")) {  // 유웨이
             result[3] = result[3].replace(/(\d{4})년 (\d{2})월 (\d{2})일 (\d{2})시 (\d{2})분 기준/, `$2/$3 $4:$5`);
         } else if (result[3].includes("-")) {  // 진학사
-            var regex = /(\d{4})-(\d{2})-(\d{2}) (오.) (\d{1,2}):(\d{2}) 현황/;
-            var monthDate = result[3].replace(regex, `$2/$3 `);
-            var meridiem = result[3].replace(regex, `$4`);
-            var hour = result[3].replace(regex, `$5`);
-            var minute = result[3].replace(regex, `$6`);          
+            let regex = /(\d{4})-(\d{2})-(\d{2}) (오.) (\d{1,2}):(\d{2}) 현황/;
+            let monthDate = result[3].replace(regex, `$2/$3 `);
+            let meridiem = result[3].replace(regex, `$4`);
+            let hour = result[3].replace(regex, `$5`);
+            let minute = result[3].replace(regex, `$6`);          
             if (meridiem == "오전" && hour.length == 1) {  // 오전 1-9시
                 hour = "0" + hour;
             } else if (meridiem == "오전" && hour == "12") {  // 오전 12시
