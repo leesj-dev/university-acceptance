@@ -41,7 +41,7 @@ class Department {
             } else if (hour != "12") { // 오후 1-11시
                 hour = String(Number(hour) + 12);
             } // 오후 12시: pass
-            this.time = monthDate + hour + ":" + minute
+            this.time = monthDate + hour + ":" + minute;
 
         } else { // 마감
             this.time = "최종 현황";
