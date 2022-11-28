@@ -57,7 +57,7 @@ const names = [NAME1, NAME2, NAME3, NAME4, NAME5, NAME6];
 let deps = [dep1, dep2, dep3, dep4, dep5, dep6];
 for (let i = 0; i < names.length; i++) {
     let id = "PAGE" + String(i + 1);
-    document.getElementById(id).innerHTML = "<th> + names[i] + </th>" // proxy server 로딩하는 데 시간 걸리므로, 대학/학과명부터 우선 로딩
+    document.getElementById(id).innerHTML = "<th>" + names[i] + "</th>"; // proxy server 로딩하는 데 시간 걸리므로, 대학/학과명부터 우선 로딩
     let depInfo = deps[i].getInfo();
     document.getElementById(id).innerHTML += "<td>" + depInfo[0] + "</td><td>" + depInfo[1] + "</td><td>" + depInfo[2] + "</td><td>" + depInfo[3] + "</td>";
 }
