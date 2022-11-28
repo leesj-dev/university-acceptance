@@ -23,7 +23,7 @@ class Department {
     }
     getInfo() {
         var pathArray = [this.path + this.plist[0], this.path + this.plist[1], this.path + this.plist[2], this.timestamp];
-        var result = scrapeElement(this.page, this.pathArray);
+        var result = scrapeElement(this.page, pathArray);
         if (result[3].includes("분")) {  // 유웨이
             result[3] = result[3].replace(/(\d{4})년 (\d{2})월 (\d{2})일 (\d{2})시 (\d{2})분 기준/, `$2/$3 $4:$5`);
         } else if (result[3].includes("-")) {  // 진학사
