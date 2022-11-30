@@ -9,7 +9,7 @@ scrapeElement = function(link, pathArray) {
             }
         }
     };
-    xhr.open("GET", "https://cors-leesj.herokuapp.com/" + link, false); // CORS 위반 때문에 proxy server로 우회. ajax는 일단 false
+    xhr.open("GET", "https://crossorigin.me/" + link, false); // CORS 위반 때문에 proxy server로 우회. ajax는 일단 false
     xhr.send();
     return arr;
 }
